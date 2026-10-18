@@ -59,6 +59,45 @@
       <span class="brand-mark" aria-hidden="true"></span>
       <span class="brand-text">AI<span class="brand-slash">//</span>EVOLUTION</span>
     </a>
+    <div class="hud-search" id="hud-search" role="search">
+      <button class="hud-search-toggle" id="hud-search-toggle" type="button" aria-label="搜索节点" aria-expanded="false" aria-controls="hud-search-field">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true">
+          <circle cx="11" cy="11" r="6.4" />
+          <path d="M16 16l4.6 4.6" stroke-linecap="round" />
+        </svg>
+      </button>
+
+      <div class="hud-search-field" id="hud-search-field">
+        <svg class="hs-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true">
+          <circle cx="11" cy="11" r="6.4" />
+          <path d="M16 16l4.6 4.6" stroke-linecap="round" />
+        </svg>
+        <label class="sr-only" for="search-input">搜索时间节点（年份、人物、机构、技术、地点）</label>
+        <input
+          id="search-input"
+          type="search"
+          placeholder="搜索年份 / 人物 / 技术"
+          autocomplete="off"
+          spellcheck="false"
+          role="combobox"
+          aria-expanded="false"
+          aria-controls="search-results"
+          aria-autocomplete="list"
+          aria-describedby="search-status"
+        />
+        <button class="hud-search-clear" id="search-clear" type="button" aria-label="清空搜索" hidden>
+          <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" stroke-linecap="round" />
+          </svg>
+        </button>
+        <kbd class="hud-search-kbd" aria-hidden="true">/</kbd>
+      </div>
+
+      <p class="sr-only" id="search-status" role="status" aria-live="polite"></p>
+
+      <div class="search-results" id="search-results" role="listbox" aria-label="搜索结果" hidden></div>
+    </div>
+
     <nav class="hud-nav" aria-label="主导航">
       <a href="#timeline">时间轴</a>
       <a href="#paradigms">六种范式</a>
@@ -140,40 +179,8 @@
         <p class="section-index">01 / TIMELINE</p>
         <h2 class="section-title">八个十年，二十次跃迁</h2>
         <p class="section-desc">
-          每一次突破都曾被认为不可能。点击任意节点，进入它发生的那个瞬间——五段档案、三组关键数据，以及一支可播放的概念短片。
+          每一次突破都曾被认为不可能。顶部搜索可以按年份、人物、机构或技术直达节点；点击任意节点，进入它发生的那个瞬间——五段档案、三组关键数据，以及一支可播放的概念短片。
         </p>
-      </div>
-
-      <div class="search" id="search" role="search">
-        <div class="search-field">
-          <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-            <circle cx="11" cy="11" r="6.5" />
-            <path d="M16 16l4.5 4.5" stroke-linecap="round" />
-          </svg>
-          <label class="sr-only" for="search-input">搜索时间节点</label>
-          <input
-            id="search-input"
-            type="search"
-            placeholder="搜索年份、人物、机构或技术　例：2016 / 辛顿 / 注意力 / 杭州"
-            autocomplete="off"
-            spellcheck="false"
-            role="combobox"
-            aria-expanded="false"
-            aria-controls="search-results"
-            aria-autocomplete="list"
-            aria-describedby="search-status"
-          />
-          <button class="search-clear" id="search-clear" type="button" aria-label="清空搜索" hidden>
-            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
-              <path d="M6 6l12 12M18 6L6 18" stroke-linecap="round" />
-            </svg>
-          </button>
-          <kbd class="search-kbd" aria-hidden="true">/</kbd>
-        </div>
-
-        <p class="search-status" id="search-status" role="status" aria-live="polite"></p>
-
-        <div class="search-results" id="search-results" role="listbox" aria-label="搜索结果" hidden></div>
       </div>
 
       <div class="filters" id="filters" role="group" aria-label="按时代筛选">

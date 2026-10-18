@@ -77,7 +77,8 @@
     filmExt: $('#film-ext'),
     filmNote: $('#film-note'),
     // 搜索
-    search: $('#search'),
+    search: $('#hud-search'),
+    searchToggle: $('#hud-search-toggle'),
     searchInput: $('#search-input'),
     searchClear: $('#search-clear'),
     searchStatus: $('#search-status'),
@@ -443,15 +444,34 @@
           );
         })
         .join('') +
-      (searchState.items.length > show.length
-        ? '<p class="sr-more">另有 ' + (searchState.items.length - show.length) + ' 个结果，已在下方时间轴标注</p>'
-        : '');
+      '<button class="sr-foot" type="button" data-action="timeline">' +
+        '<span>在时间轴中查看 ' + searchState.items.length + ' 个结果</span>' +
+        '<span aria-hidden="true">↓</span>' +
+      '</button>';
 
     els.searchResults.hidden = false;
     els.searchResults.querySelectorAll('.sr-item').forEach((btn, i) => {
       btn.addEventListener('click', () => pickResult(i));
       btn.addEventListener('pointerenter', () => setActiveResult(i, false));
     });
+    const foot = els.searchResults.querySelector('.sr-foot');
+    if (foot) {
+      foot.addEventListener('click', () => {
+        hideResults();
+        const section = $('#timeline');
+        if (section) section.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      });
+    }
+  }
+
+  function closeSearchField() {
+    if (els.search) els.search.classList.remove('is-open');
+    if (els.searchToggle) els.searchToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  function openSearchField() {
+    if (els.search) els.search.classList.add('is-open');
+    if (els.searchToggle) els.searchToggle.setAttribute('aria-expanded', 'true');
   }
 
   function pickResult(i) {
@@ -459,6 +479,7 @@
     if (!row) return;
     hideResults();
     if (els.searchInput) els.searchInput.blur();
+    closeSearchField();
     openDetail(row.item.id, { push: true });
   }
 
@@ -535,8 +556,22 @@
       els.searchInput.focus();
     });
 
+    if (els.searchToggle) {
+      els.searchToggle.addEventListener('click', () => {
+        const open = els.search.classList.toggle('is-open');
+        els.searchToggle.setAttribute('aria-expanded', String(open));
+        if (open) {
+          els.searchInput.focus();
+        } else {
+          hideResults();
+          els.searchInput.blur();
+        }
+      });
+    }
+
     document.addEventListener('pointerdown', (e) => {
-      if (!els.searchResults.hidden && !els.search.contains(e.target)) hideResults();
+      if (!els.search.contains(e.target) && !els.searchResults.hidden) hideResults();
+      if (!els.search.contains(e.target)) closeSearchField();
     });
 
     // 全局快捷键：/ 或 Ctrl(⌘)+K 聚焦搜索
@@ -548,7 +583,7 @@
       const cmdK = (e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K');
       if (!slash && !cmdK) return;
       e.preventDefault();
-      els.search.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+      openSearchField();
       els.searchInput.focus();
       els.searchInput.select();
     });
@@ -714,9 +749,9 @@
     els.atlasMap.hidden = true;
     if (els.atlasMapWrap) els.atlasMapWrap.classList.add('is-fallback');
     els.atlasFallback.hidden = false;
-    els.atlasNote.textContent = 'MAP OFFLINE · 地点索引模式';
+    els.atlasNote.textContent = 'LOCATION INDEX · 地图待授权';
     els.atlasFallbackDesc.textContent =
-      '这个环境没能加载在线地图（当前离线，或不在预览容器里）。下面用编年索引代替：点击城市，同样可以看该地发生的节点与时间。';
+      '在线地图需要在 index.html 的 window.AI_TMAP_KEY 里填入腾讯位置服务密钥后才会显示（详见 README「地图说明」）。这里先按城市列出全部节点：点击城市，中间的卡片会列出发生在这里的事件与年份。';
     renderAtlas();
   }
 
