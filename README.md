@@ -47,8 +47,13 @@ python -m http.server 8000
 
 - 在 WorkBuddy 预览环境中运行时，前端不出现任何密钥：SDK 通过运行时的钥匙代理（`_TMapSecurityConfig`）鉴权。
 - 部署到 GitHub Pages 等自建环境时，代理地址不可用，地图会自动降级为「地点索引」。
-  若要在线上也显示地图，请到 <https://lbs.qq.com> 申请自己的 key，填入 `index.html` 中的
-  `window.AI_TMAP_KEY`（同时配置 Referer 域名白名单）。
+  若要在线上也显示地图，需要一个自己的 key：
+
+  1. 打开 <https://lbs.qq.com>，用 QQ 或微信登录，完成实名认证（个人免费）；
+  2. 控制台 → 应用管理 → 我的应用 → 创建应用（名称随意，类型选「浏览器」）；
+  3. 在该应用下「添加 Key」：启用产品勾选 **WebServiceAPI** 与 **JavaScript API GL**，
+     域名白名单填 `zzz-zhong.github.io`；
+  4. 复制生成的 Key，填到 `index.html` 里的 `window.AI_TMAP_KEY = '你的KEY';`，重新部署即可。
 
 ## 上线
 
