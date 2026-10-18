@@ -2802,11 +2802,20 @@ main {
   pointer-events: none;
 }
 
+.atlas-map-wrap.is-fallback {
+  height: auto;
+  min-height: 0;
+}
+
+.atlas-map-wrap.is-fallback::after,
+.atlas-map-wrap.is-fallback .atlas-corner {
+  display: none;
+}
+
 .atlas-fallback {
-  position: absolute;
-  inset: 0;
-  overflow-y: auto;
-  padding: 24px 22px;
+  position: relative;
+  padding: 26px max(20px, calc((100vw - 1240px) / 2 + 64px)) 30px;
+  overflow-y: visible;
   background:
     radial-gradient(circle at 30% 20%, rgba(34, 211, 238, 0.09), transparent 55%),
     radial-gradient(circle at 78% 76%, rgba(167, 139, 250, 0.09), transparent 55%),
@@ -2814,7 +2823,7 @@ main {
 }
 
 .atlas-fallback-title {
-  margin: 0 0 8px;
+  margin: 0 0 10px;
   font-family: var(--mono);
   font-size: 10px;
   letter-spacing: 0.22em;

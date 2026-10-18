@@ -85,6 +85,7 @@
     // 地图
     atlas: $('#atlas'),
     atlasMap: $('#atlas-map'),
+    atlasMapWrap: $('#atlas-map-wrap'),
     atlasFallback: $('#atlas-fallback'),
     atlasFallbackDesc: $('#atlas-fallback-desc'),
     atlasFallbackGrid: $('#atlas-fallback-grid'),
@@ -711,6 +712,7 @@
     atlas.loading = null;
 
     els.atlasMap.hidden = true;
+    if (els.atlasMapWrap) els.atlasMapWrap.classList.add('is-fallback');
     els.atlasFallback.hidden = false;
     els.atlasNote.textContent = 'MAP OFFLINE · 地点索引模式';
     els.atlasFallbackDesc.textContent =
@@ -721,6 +723,13 @@
   function mountAtlasMap() {
     if (atlas.requested) return;
     atlas.requested = true;
+
+    // 自建部署（GitHub Pages 等）没有运行时钥匙代理：直接降价为地点索引，不白等 SDK 超时
+    const proxyHost = (window._TMapSecurityConfig || {}).serviceHost || '';
+    if (!window.AI_TMAP_KEY && proxyHost.indexOf('__WB_HTTP_PORT__') >= 0) {
+      failAtlas();
+      return;
+    }
 
     loadTMap()
       .then(() => {
