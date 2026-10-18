@@ -1,1 +1,12 @@
-# placeholder
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+
+# 测试与临时产物
+.qa/
+.shots/
+*.log
